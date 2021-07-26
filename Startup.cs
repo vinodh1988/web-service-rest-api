@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using rest_service.Models;
+using rest_service.Services;
 
 namespace rest_service
 {
@@ -28,6 +30,7 @@ namespace rest_service
         {
 
             services.AddControllers();
+            services.AddScoped<IPersonService,PersonService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "rest_service", Version = "v1" });
