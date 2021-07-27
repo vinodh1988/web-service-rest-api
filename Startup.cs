@@ -22,6 +22,10 @@ namespace rest_service
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+             using (var client = new MemoryDBContext())
+            {
+                client.Database.EnsureCreated();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -32,6 +36,7 @@ namespace rest_service
 
             services.AddControllers().AddXmlSerializerFormatters();
             services.TryAddSingleton<IPersonService,PersonService>();
+            services.AddEntityFrameworkSqlite().AddDbContext<MemoryDBContext>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "rest_service", Version = "v1" });
