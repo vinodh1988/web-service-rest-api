@@ -10,5 +10,9 @@ namespace rest_service.Services{
         public IEnumerable<Person> GetPeople(){
              return list;     
         }
+
+        public void Add(Person person){
+                 this.list.Add(person);
+        }
     }
 }
