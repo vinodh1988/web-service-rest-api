@@ -14,5 +14,17 @@ namespace rest_service.Services{
         public void Add(Person person){
                  this.list.Add(person);
         }
+
+        public Person Get(int Sno){
+            foreach(var x in list){
+                if(x.Sno == Sno) 
+                    return x;
+            }
+            return null;
+        }
+
+        public void Remove(Person person){
+            this.list.Remove(person);
+        }
     }
 }

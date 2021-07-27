@@ -28,17 +28,56 @@ namespace rest_service.Controllers
         {
             return this.pservice.GetPeople();
         }
-
+        [HttpPost]
         public ActionResult<Person> Post(Person person){
-           if(person.Name==null || person.Name.Length <=2)
+        
+             ActionResult<Person> validate=Validate(person);
+            if(validate==null){
+                this.pservice.Add(person);
+                return person;
+            }
+            return validate;
+        }
+        [HttpPatch]
+        public ActionResult<Person> Patch(Person person){
+            ActionResult<Person> validate=Validate(person);
+            if(validate==null){
+                 Person p=this.pservice.Get(person.Sno);
+                 if(p==null)
+                    return  StatusCode(StatusCodes.Status500InternalServerError, new { message = "No Such Person exists" });
+                 else
+                 {
+                     p.Name = person.Name;
+                     p.City = person.City;
+                     return p;
+                 }
+                    
+            }
+            return validate;
+        }
+        [HttpDelete("{Sno}")]
+        public ActionResult<Person> Delete(int Sno){
+             Person p=this.pservice.Get(Sno);
+                 if(p==null)
+                    return  StatusCode(StatusCodes.Status500InternalServerError, new { message = "No Such Person exists" });
+                 else
+                 {
+                    this.pservice.Remove(p);
+                     return p;
+                 }
+        }
+
+
+        public ActionResult<Person> Validate(Person person){
+          if(person.Name==null || person.Name.Length <=2)
              return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Name is too short" });
         
            if(person.City==null || person.City.Length<=2)
              return StatusCode(StatusCodes.Status500InternalServerError, new { message = "City is too short" });
         
-           
-           this.pservice.Add(person);
-           return person;
+            return null;
         }
+
+
     }
 }
