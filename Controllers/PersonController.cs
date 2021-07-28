@@ -10,6 +10,7 @@ using rest_service.Models;
 
 namespace rest_service.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PersonController : ControllerBase
@@ -67,7 +68,7 @@ namespace rest_service.Controllers
                  }
         }
 
-
+       [ApiExplorerSettings(IgnoreApi = true)]
         public ActionResult<Person> Validate(Person person){
           if(person.Name==null || person.Name.Length <=2)
              return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Name is too short" });

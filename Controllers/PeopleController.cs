@@ -9,6 +9,7 @@ using rest_service.Models;
 
 namespace rest_service.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PeopleController : ControllerBase

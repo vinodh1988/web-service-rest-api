@@ -14,7 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using rest_service.Models;
 using rest_service.Services;
-
+using rest_api.Services;
+using rest_api.Helpers;
 namespace rest_service
 {
     public class Startup
@@ -36,6 +37,7 @@ namespace rest_service
 
             services.AddControllers().AddXmlSerializerFormatters();
             services.TryAddSingleton<IPersonService,PersonService>();
+             services.AddScoped<IUserService, UserService>();
             services.AddEntityFrameworkSqlite().AddDbContext<MemoryDBContext>();
             services.AddSwaggerGen(c =>
             {
@@ -58,6 +60,8 @@ namespace rest_service
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
